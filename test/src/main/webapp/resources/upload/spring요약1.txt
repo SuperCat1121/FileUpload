@@ -1,0 +1,34 @@
+1] 설치
+eclipse -> help -> marketplace -> sts(spring)
+"Spring Tools 3" 설치 (4 설치하면 안됨!!)
+
+2] Spring Framework
+* Framework : 프로그램을 개발하는데 있어 공통적인 부분들은 만들어 놓고,
+개발자가 필요한 부분들을 개발하면 완성이 되도록 하는, 반쯤 만들어진 프로그램
+
+EJB(Enterprise Java Bean)에서 POJO(Plain Old Java Object) 기반으로 개발을 하는
+경량 컨테이너.
+
+* 특징
+
+1. DI/IoC : 의존성 주입 / 제어 역전
+제어 역전 - 객체의 생성 권한이 spring ioc container로 넘겨짐
+            사용하는 측에서는 container가 만들어 놓은 객체를 가져와서 사용만 한다.
+            (<bean>)
+의존성 주입 - 객체 생성하면서 값 전달
+
+2. AOP : 관점 지향 프로그래밍 (Aspect Oriented Programming)
+관점을 분리해서 개발하겠다.
+
+<용어>
+cc : core concern (주 관심사항, 핵심 관심사항)
+ccc : cross cutting concern (공통 관심사항)
+JoinPoint : ccc가 연결될 수 있는 위치들 (보통, method 호출 시점)
+Pointcut : ccc가 어디에 연결될 것인지를 알려줌
+Advice : ccc 실제 코드
+Advisor(Aspect) : Pointcut + Advice 
+weaving : 실제 프로그램의 흐름에 엮이는 것
+
+3. OCP (Open Closed Principle) : 개발자에게 필요한 부분만 확장해서 사용 가능
+
+3] Spring MVC Framework

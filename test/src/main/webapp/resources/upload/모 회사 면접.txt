@@ -1,0 +1,13 @@
+1. 학과 정보
+2. WEB 관련 프로젝트 갯수 및 담당 기능, 기여도 설명
+3. DB 스키마
+4. PRIMARY KEY
+5. JSON과 XML 차이
+6. 객체지향언어
+7. 동기식 비동기식 차이
+8. 컬렉션
+9. 트랜잭션
+10. MVC
+11. INNER JOIN 과 OUTER JOIN 차이
+12. AJAX
+13. JDBC MYBATIS 차이
