@@ -43,15 +43,49 @@ window.onload = function() {
 	   })
 	   .attr("class", "bar");
 	}
+	
+	$(function() {
+		$("#uploadForm").submit(function() {
+			var existFile = $("input[type=file]").val();
+			if(!existFile) {
+				alert("파일을 첨부해주세요!!");
+				return false;
+			}
+		});
+	});
 </script>
+<style type="text/css">
+	form label {
+		padding: 6px 12px;
+	    color: black;
+	    background: #fff;
+	    cursor: pointer;
+	    border: 1px solid #A4A4A4;
+	    border-radius: 1px;
+	    margin-left: 2px;
+	    position: absolute;
+	    font-size: 13px;
+	}
+	
+	form label:hover {
+		border: 1px solid rgba(108,161,254, .6);
+	}
+
+	form input[type="file"] {
+		width: 240px;
+	    height: 27px;
+	    margin-left: 50px;
+	    margin-top: 2px;
+	}
+</style>
 </head>
 <body>
 	<svg id="svg" style="width:500px; height:500px;">
 	</svg>
-	<form name="uploadForm" action="upload" enctype="multipart/form-data" method="post">
-		<input type="text" name="title">
-		<input type="file" name="upfile">
-		<input type="submit">
+	<form id="uploadForm" action="upload" enctype="multipart/form-data" method="post">
+		<label for="inputFile">업로드파일 찾기</label>
+		<input type="file" id="inputFile" name="file">
+		<input type="submit" value="업로드하기">
 	</form>
 </body>
 </html>

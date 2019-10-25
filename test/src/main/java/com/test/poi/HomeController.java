@@ -2,10 +2,15 @@ package com.test.poi;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -53,19 +58,60 @@ public class HomeController {
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(Model model, HttpServletRequest request) throws Exception {
-		System.out.println(request.getRealPath("upload"));
-		String savePath = "C:/Users/user2/Desktop/Eclipse-jee/eclipse/WorkSpace/WorkSpace_Python/test/src/main/webapp/resources/upload/";
+		System.out.println(request.getSession().getServletContext().getRealPath("/upload"));
+		String savePath = request.getSession().getServletContext().getRealPath("/upload");
 		String fileName = "";
 		try {
 			MultipartRequest multi = 
 					new MultipartRequest(request, savePath ,10 * 1024, "UTF-8", new DefaultFileRenamePolicy());
-			fileName = multi.getFilesystemName("upfile");
+			// upfile : input type=file 인 태그의 이름
+			fileName = multi.getFilesystemName("file");
 			System.out.println(fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("fileName", savePath+fileName);
+		model.addAttribute("fileName", fileName);
 		return "upload";
+	}
+	
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	public String download(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		String fileName = request.getParameter("fileName");
+		System.out.println(fileName);
+		String filePath = request.getSession().getServletContext().getRealPath("upload") + "\\" + fileName;
+		System.out.println("filePath : " + filePath);
+		File file = new File(filePath);
+		
+		// mimeType : 메인타입/서브타입 (데이터 표준 포맷)
+		// ex) test/plain, image/jpeg
+		String mimeType = request.getSession().getServletContext().getMimeType(filePath);
+		System.out.println("mime : " + mimeType);
+		if(mimeType == null) {
+			// application/octet-stream : 모든 경우를 위한 기본값
+			//                            알려지지 않은 파일 타입은 이 타입으로 사용
+			// test/plain : 텍스트 파일을 위한 기본값
+			mimeType = "application/octet-stream";
+		}
+		response.setContentType(mimeType);
+		
+		String encoding = new String(fileName.getBytes("UTF-8"), "8859_1");
+		response.setHeader("Content-Disposition", "attachment; filename = " + encoding);
+		
+		FileInputStream in = new FileInputStream(file);
+		ServletOutputStream outStream = response.getOutputStream();
+		
+		byte b[] = new byte[4096];
+		int data = 0;
+		while((data = in.read(b, 0, b.length)) != -1) {
+			outStream.write(b, 0, data);
+		}
+		
+		outStream.flush();
+		outStream.close();
+		in.close();
+		
+		return null;
 	}
 }
 
